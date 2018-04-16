@@ -23,7 +23,7 @@ class GuaCanvas extends GuaObject {
         this.elements = []
     }
     
-    timer() {
+    run() {
         this.bindEvents()
         setInterval(() => {
             this.clear()
@@ -104,22 +104,42 @@ class GuaCanvas extends GuaObject {
     }
     
     createCallbacks () {
+        const onClick = (e) => {
+            const len = this.elements.length
+            for(let i = len - 1; i >= 0; i--) {
+                const activated = this.elements[i].clickHandler(e, i)
+                if(activated) {
+                    break
+                }
+            }
+        }
+        
         const onMousedown = (e) => {
-            this.startPoint = GuaCanvas.mousePoint(e)
-            this.refresh()
+            const len = this.elements.length
+            for(let i = len - 1; i >= 0; i--) {
+                const activated = this.elements[i].mousedownHandler(e)
+                if(activated) {
+                    break
+                }
+            }
+
+            // this.elements.forEach((ele) => {
+            //     ele.mousedownHandler(e)
+            // })
         }
         
         const onMousemove = (e) => {
-            this.endPoint = GuaCanvas.mousePoint(e)
+        
         }
         
-        const onMouseup = (e, figure) => {
-            this.endPoint = GuaCanvas.mousePoint(e)
-            this.lines.push({ type: figure, sp: this.startPoint, ep: this.endPoint , color: this.currentColor})
-            clearInterval(this.interval)
+        const onMouseup = (e) => {
+            this.elements.forEach((ele) => {
+                ele.mouseupHandler(e)
+            })
         }
         
         return {
+            onClick,
             onMousedown,
             onMousemove,
             onMouseup,
@@ -128,13 +148,15 @@ class GuaCanvas extends GuaObject {
     
     // line
     bindEvents () {
-        const {onMousedown, onMousemove, onMouseup} = this.callbacks
+        const {onClick, onMousedown, onMousemove, onMouseup} = this.callbacks
+        
+        this.canvas.addEventListener('click', onClick)
         
         this.canvas.addEventListener('mousedown', onMousedown)
         
         this.canvas.addEventListener('mousemove', onMousemove)
         
-        this.canvas.addEventListener('mouseup', e => onMouseup(e, this.figureType))
+        this.canvas.addEventListener('mouseup', onMouseup)
     }
     
     render () {
@@ -258,7 +280,7 @@ class GuaCanvas extends GuaObject {
     }
     
     // _drawRect: p1: upperLeft, p2: downRight
-    _drawFillRect (p1, p2, fillColor=this.currentColor) {
+    _drawFillRect (p1, p2, fillColor=GuaColor.white()) {
         const w = Math.abs(p1.x - p2.x)
         const h = Math.abs(p1.y - p2.y)
         const size = GuaSize.new(w, h)
@@ -266,7 +288,7 @@ class GuaCanvas extends GuaObject {
     }
     
     // fill rect 没有边框
-    drawFillRect (upperLeft, size, fillColor=this.currentColor) {
+    drawFillRect (upperLeft, size, fillColor=GuaColor.white()) {
         const { x, y } = upperLeft
         const { w, h } = size
         

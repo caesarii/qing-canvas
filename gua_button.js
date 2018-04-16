@@ -52,7 +52,7 @@ class GuaButton extends GuaObject {
     }
 
     draw() {
-        this.canvas.drawRect(this.position, this.size, this.fillColor, this.borderColor)
+        this.canvas.drawRect(this.position, this.size, this.borderColor, this.fillColor, )
     }
 
 }
