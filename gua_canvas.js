@@ -16,7 +16,6 @@ class GuaCanvas extends GuaObject {
         this.endPoint = null
         this.lines = []
         this.interval = null
-        
         this.callbacks = this.createCallbacks()
     }
     
@@ -51,24 +50,12 @@ class GuaCanvas extends GuaObject {
                 
                 drawFigureMap[figure](sp, ep)
                 
-                // if (figure === figureType.line) {
-                //     log('line')
-                //     drawLine(sp, ep)
-                // } else if (figure === figureType.rect) {
-                //     log('rect')
-                //     drawRect(sp, ep)
-                // }
-                
                 // 每一帧都要将之前绘制过的图形绘制一遍
                 self.lines.forEach((f) => {
                     drawFigureMap[f.type](f.sp, f.ep)
-                    
-                    // if (f.type === 'line') {
-                    //     drawLine(f.sp, f.ep)
-                    // } else if (f.type === 'rect') {
-                    //     drawRect(f.sp, f.ep)
-                    // }
+
                 })
+                
                 render()
             }
         }, 100)
