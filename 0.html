@@ -4,6 +4,10 @@
         <meta charset="utf-8">
         <title>作业 0</title>
         <style>
+            html, body {
+                width: 100%;
+                height: 100%;
+            }
             canvas {
                 outline: 1px dashed lightskyblue;
             }
@@ -15,37 +19,83 @@
         <script src='gua_size.js'></script>
         <script src='gua_color.js'></script>
         <script src='gua_canvas.js'></script>
+        <script src="gua_figure_type.js"></script>
     </head>
     <body>
-        <canvas id="id-canvas" width="400" height="300"></canvas>
+        <canvas id="id-canvas" width="400px" height="300px"></canvas>
+        <div >
+            <button class="figure-btn" value="line">画线</button>
+            <button class="figure-btn" value="rect">画空心矩形</button>
+            <button class="figure-btn" value="rect">画实心矩形</button>
+            <ul>
+                <li>点击按钮后绘制</li>
+                <li>rect只能往右下绘制</li>
+            </ul>
+        </div>
 <script>
-const __main = function() {
+const testAxe0 = function() {
     let canvas = GuaCanvas.new('#id-canvas')
+    // 这是一个测试函数, 给你看原理的, 只是看看
+    canvas.draw()
 
+    canvas.clear(GuaColor.white())
+    // 画一条线
+    let p0 = GuaPoint.new(200, 150)
     let p1 = GuaPoint.new(0, 0)
-    let p2 = GuaPoint.new(300, 60)
+    let p2 = GuaPoint.new(400, 0)
+    let p3 = GuaPoint.new(400, 300)
+    let p4 = GuaPoint.new(0, 300)
 
-    // point
+    let p5 = GuaPoint.new(200, 0)
+    let p6 = GuaPoint.new(400, 150)
+    let p7 = GuaPoint.new(200, 300)
+    let p8 = GuaPoint.new(0, 150)
+
     canvas.drawPoint(p1, GuaColor.black())
 
     // line
-    canvas.drawLine(p1, p2, GuaColor.black())
+    canvas.drawLine(p0, p1, GuaColor.black())
+    canvas.drawLine(p0, p2, GuaColor.black())
+    canvas.drawLine(p0, p3, GuaColor.black())
+    canvas.drawLine(p0, p4, GuaColor.black())
+
+    canvas.drawLine(p0, p5, GuaColor.black())
+    canvas.drawLine(p0, p6, GuaColor.black())
+    canvas.drawLine(p0, p7, GuaColor.black())
+    canvas.drawLine(p0, p8, GuaColor.black())
+
+
 
     // rect
-    const p3 = GuaPoint.new(50, 50)
     const size = GuaSize.new(200, 100)
     canvas.drawRect(p3, size, GuaColor.yellow(), GuaColor.black())
 
     // fillrect
     const s = GuaSize.new(50, 50)
-    const p4 = GuaPoint.new(150, 250)
     canvas.drawFillRect(p4, s, GuaColor.green(), GuaColor.black())
 
 
-    // 渲染
+    // 渲染出来, 不调用这个函数就不会显示结果
     canvas.render()
+}
 
+const testAxe1 = function() {
+    let canvas = GuaCanvas.new('#id-canvas')
+    const bindEvents = function() {
+        const btns = document.querySelectorAll('.figure-btn')
+        for(let i = 0; i < btns.length; i++) {
+            btns[i].addEventListener('click', (e) => {
+                canvas.drawFigure(e.target.value)
+            })
 
+        }
+    }
+
+    bindEvents()
+}
+const __main = function() {
+
+    testAxe1()
 }
 
 __main()
