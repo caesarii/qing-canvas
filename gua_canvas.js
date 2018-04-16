@@ -32,7 +32,7 @@ class GuaCanvas extends GuaObject {
         const figure = this.figureType
         const drawLine = this.drawLine.bind(this)
         const drawRect = this._drawRect.bind(this)
-        const drawFillRect = this.drawFillRect.bind(this)
+        const drawFillRect = this._drawFillRect.bind(this)
         const render = this.render.bind(this)
         const clear = this.clear.bind(this)
         
@@ -221,8 +221,16 @@ class GuaCanvas extends GuaObject {
         }
     }
     
+    // _drawRect: p1: upperLeft, p2: downRight
+    _drawFillRect (p1, p2) {
+        const w = Math.abs(p1.x - p2.x)
+        const h = Math.abs(p1.y - p2.y)
+        const size = GuaSize.new(w, h)
+        this.drawFillRect(p1, size)
+    }
+    
     // fill rect 没有边框
-    drawFillRect (upperLeft, size, fillColor) {
+    drawFillRect (upperLeft, size, fillColor=GuaColor.yellow()) {
         const { x, y } = upperLeft
         const { w, h } = size
         
