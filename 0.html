@@ -20,6 +20,7 @@
         <script src='gua_color.js'></script>
         <script src='gua_canvas.js'></script>
         <script src="gua_figure_type.js"></script>
+        <script src="gua_button.js"></script>
     </head>
     <body>
         <canvas id="id-canvas" width="400px" height="300px"></canvas>
@@ -107,9 +108,28 @@ const testAxe1 = function() {
 
     bindEvents()
 }
+
+const testAxe2 = function() {
+    let canvas = GuaCanvas.new('#id-canvas')
+
+    const position = GuaPoint.new(100, 100)
+    const p2 = GuaPoint.new(58, 58)
+    const size = GuaSize.new(100, 100)
+
+    const btn = GuaButton.new(position, size)
+    const btn2 = GuaButton.new(p2, size)
+
+    canvas.addElement(btn)
+    canvas.addElement(btn2)
+
+    canvas.timer()
+}
+
 const __main = function() {
 
-    testAxe1()
+    // testAxe1()
+
+    testAxe2()
 }
 
 __main()

@@ -19,6 +19,28 @@ class GuaCanvas extends GuaObject {
         this.callbacks = this.createCallbacks()
         
         this.currentColor = GuaColor.black()
+        
+        this.elements = []
+    }
+    
+    timer() {
+        this.bindEvents()
+        setInterval(() => {
+            this.clear()
+            this.drawElement()
+            this.render()
+        }, 10)
+    }
+    
+    addElement(element) {
+        element.canvas = this
+        this.elements.push(element)
+    }
+    
+    drawElement() {
+        this.elements.forEach(ele => {
+            ele.draw()
+        })
     }
     
     drawFigure (type) {
