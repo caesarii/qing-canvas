@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>作业 0</title>
+        <style>
+            canvas {
+                outline: 1px dashed lightskyblue;
+            }
+        </style>
+        <!-- 引入所有用到的文件 -->
+        <script src='gua_utils.js'></script>
+        <script src='gua_object.js'></script>
+        <script src='gua_point.js'></script>
+        <script src='gua_size.js'></script>
+        <script src='gua_color.js'></script>
+        <script src='gua_canvas.js'></script>
+    </head>
+    <body>
+        <canvas id="id-canvas" width="400" height="300"></canvas>
+<script>
+const __main = function() {
+    let canvas = GuaCanvas.new('#id-canvas')
+
+    let p1 = GuaPoint.new(0, 0)
+    let p2 = GuaPoint.new(300, 60)
+
+    // point
+    canvas.drawPoint(p1, GuaColor.black())
+
+    // line
+    canvas.drawLine(p1, p2, GuaColor.black())
+
+    // rect
+    const p3 = GuaPoint.new(50, 50)
+    const size = GuaSize.new(200, 100)
+    canvas.drawRect(p3, size, GuaColor.yellow(), GuaColor.black())
+
+    // fillrect
+    const s = GuaSize.new(50, 50)
+    const p4 = GuaPoint.new(150, 250)
+    canvas.drawFillRect(p4, s, GuaColor.green(), GuaColor.black())
+
+
+    // 渲染
+    canvas.render()
+
+
+}
+
+__main()
+</script>
+    </body>
+</html>
