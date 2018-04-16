@@ -17,6 +17,8 @@ class GuaCanvas extends GuaObject {
         this.lines = []
         this.interval = null
         this.callbacks = this.createCallbacks()
+        
+        this.currentColor = GuaColor.black()
     }
     
     drawFigure (type) {
@@ -24,6 +26,16 @@ class GuaCanvas extends GuaObject {
         log('type', type)
         this.figureType = type
         this.bindEvents()
+    }
+    
+    setColor(type) {
+        const colorMap = {
+            red: GuaColor.red(),
+            yellow: GuaColor.yellow(),
+            green: GuaColor.green(),
+        }
+        
+        this.currentColor = colorMap[type]
     }
     
     // line
@@ -52,7 +64,7 @@ class GuaCanvas extends GuaObject {
                 
                 // 每一帧都要将之前绘制过的图形绘制一遍
                 self.lines.forEach((f) => {
-                    drawFigureMap[f.type](f.sp, f.ep)
+                    drawFigureMap[f.type](f.sp, f.ep, f.color)
 
                 })
                 
@@ -81,7 +93,7 @@ class GuaCanvas extends GuaObject {
         
         const onMouseup = (e, figure) => {
             this.endPoint = GuaCanvas.mousePoint(e)
-            this.lines.push({ type: figure, sp: this.startPoint, ep: this.endPoint })
+            this.lines.push({ type: figure, sp: this.startPoint, ep: this.endPoint , color: this.currentColor})
             clearInterval(this.interval)
         }
         
@@ -141,7 +153,7 @@ class GuaCanvas extends GuaObject {
         p[i + 3] = a
     }
     
-    drawPoint (point, color = GuaColor.black()) {
+    drawPoint (point, color = this.currentColor) {
         // point: GuaPoint
         let { w, h } = this
         let p = point
@@ -152,7 +164,7 @@ class GuaCanvas extends GuaObject {
         }
     }
     
-    drawLine (p1, p2, color = GuaColor.black()) {
+    drawLine (p1, p2, color = this.currentColor) {
         // p1 p2 分别是起点和终点, GuaPoint 类型
         // color GuaColor
         // 使用 drawPoint 函数来画线
@@ -188,14 +200,16 @@ class GuaCanvas extends GuaObject {
     }
     
     // _drawRect: p1: upperLeft, p2: downRight
-    _drawRect (p1, p2, fillColor = null, borderColor = GuaColor.black()) {
+    _drawRect (p1, p2, borderColor = this.currentColor, fillColor = null, ) {
+        
+        
         const w = Math.abs(p1.x - p2.x)
         const h = Math.abs(p1.y - p2.y)
         const size = GuaSize.new(w, h)
-        this.drawRect(p1, size, fillColor, borderColor)
+        this.drawRect(p1, size, borderColor, fillColor)
     }
     
-    drawRect (upperLeft, size, fillColor = null, borderColor = GuaColor.black()) {
+    drawRect (upperLeft, size, borderColor = this.currentColor, fillColor = null,) {
         // upperLeft: GuaPoint, 矩形左上角座标
         // size: GuaSize, 矩形尺寸
         // fillColor: GuaColor, 矩形的填充颜色, 默认为空, 表示不填充
@@ -222,15 +236,15 @@ class GuaCanvas extends GuaObject {
     }
     
     // _drawRect: p1: upperLeft, p2: downRight
-    _drawFillRect (p1, p2) {
+    _drawFillRect (p1, p2, fillColor=this.currentColor) {
         const w = Math.abs(p1.x - p2.x)
         const h = Math.abs(p1.y - p2.y)
         const size = GuaSize.new(w, h)
-        this.drawFillRect(p1, size)
+        this.drawFillRect(p1, size, fillColor)
     }
     
     // fill rect 没有边框
-    drawFillRect (upperLeft, size, fillColor=GuaColor.yellow()) {
+    drawFillRect (upperLeft, size, fillColor=this.currentColor) {
         const { x, y } = upperLeft
         const { w, h } = size
         

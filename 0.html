@@ -27,6 +27,13 @@
             <button class="figure-btn" value="line">画线</button>
             <button class="figure-btn" value="rect">画空心矩形</button>
             <button class="figure-btn" value="fillrect">画实心矩形</button>
+
+            <br>
+
+            <button class="color-btn" value="red">red</button>
+            <button class="color-btn" value="yellow">yellow</button>
+            <button class="color-btn" value="green">green</button>
+
             <ul>
                 <li>点击按钮后绘制</li>
                 <li>rect只能往右下绘制</li>
@@ -87,8 +94,15 @@ const testAxe1 = function() {
             btns[i].addEventListener('click', (e) => {
                 canvas.drawFigure(e.target.value)
             })
-
         }
+
+        const colorBtn = document.querySelectorAll('.color-btn')
+        for(let i = 0; i < colorBtn.length; i++) {
+            colorBtn[i].addEventListener('click', (e) => {
+                canvas.setColor(e.target.value)
+            })
+        }
+
     }
 
     bindEvents()
